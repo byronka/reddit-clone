@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
 
-function App() {
+const API_URL = 'http://localhost:3000/posts'
+
+interface Post {
+  name: string
+}
+
+const App = () => {
+  let post: Post;
+  let setPost: any;
+  [post, setPost] = useState({name: ""})
+
+  useEffect(() => {
+    requestPost();
+  }, [])
+
+  async function requestPost() {
+    const res = await fetch(API_URL);
+    const json = await res.json();
+    setPost(json)
+    return json;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>{post.name}</div>
   );
 }
 
