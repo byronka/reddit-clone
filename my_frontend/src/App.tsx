@@ -12,15 +12,15 @@ const App = () => {
   [post, setPost] = useState({name: ""})
 
   useEffect(() => {
-    requestPost();
-  }, [])
+    async function requestPost() {
+      const res = await fetch(API_URL);
+      const json = await res.json();
+      setPost(json)
+      return json;
+    }
 
-  async function requestPost() {
-    const res = await fetch(API_URL);
-    const json = await res.json();
-    setPost(json)
-    return json;
-  }
+    requestPost();
+  }, [setPost])
 
   return (
     <div>{post.name}</div>
