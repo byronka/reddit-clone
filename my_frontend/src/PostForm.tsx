@@ -30,7 +30,7 @@ const PostForm = () => {
       });
   };
 
-  const successBox = success ? <div>Success</div> : <div></div>;
+  const successBox = success ? <div id="postResult">Success</div> : <div></div>;
   return (
     <>
       <form action="#" method="POST" onSubmit={submitData}>
