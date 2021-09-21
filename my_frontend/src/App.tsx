@@ -1,54 +1,42 @@
 import { useState, useEffect } from "react";
+import PostInterface from "./PostInterface";
+import PostList from "./PostList";
+import PostForm from "./PostForm";
 
-const API_URL = 'http://localhost:3000/posts'
-
-interface Post {
-  id: string
-  name: string
-  description: string
-}
+const API_URL = "http://localhost:3000/posts";
 
 const App = () => {
-  let posts: Post[];
+  let posts: PostInterface[];
   let setPosts: Function;
-  [posts, setPosts] = useState([])
+  [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function requestPost() {
       try {
-        let res = await fetch(API_URL)
+        let res = await fetch(API_URL);
         const json = await res.json();
-        setPosts(json)
+        setPosts(json);
         return json;
-      } catch(err) {
+      } catch (err) {
         if (err instanceof TypeError) {
-          if(err.message === 'Failed to fetch') {
-            alert('failed to fetch - is the server down?')
+          if (err.message === "Failed to fetch") {
+            alert("failed to fetch - is the server down?");
           }
         } else {
-          console.log('failed during request: ' + err)
+          console.log("failed during request: " + err);
         }
-        
       }
     }
 
     requestPost();
-  }, [setPosts])
+  }, [setPosts]);
 
   return (
     <div>
-      <ul>
-      {posts.map((post) => {
-        return (
-          <li key={post.id}>
-            <h2>{post.name}</h2>
-            <p>{post.description}</p>
-          </li>
-        )
-      })}
-      </ul>
+      <PostForm />
+      <PostList posts={posts} />
     </div>
   );
-}
+};
 
 export default App;
