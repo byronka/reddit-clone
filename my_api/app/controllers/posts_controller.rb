@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
   def index
-    post = Post.new(name:'bob', description:'I am a description')
-    render(json: post)
+    render(json: Post.select("id, name, description"))
   end
 end
