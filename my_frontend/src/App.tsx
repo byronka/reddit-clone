@@ -3,21 +3,22 @@ import { useState, useEffect } from "react";
 const API_URL = 'http://localhost:3000/posts'
 
 interface Post {
+  id: string
   name: string
   description: string
 }
 
 const App = () => {
-  let post: Post;
-  let setPost: any;
-  [post, setPost] = useState({name: "", description: ""})
+  let posts: Post[];
+  let setPosts: Function;
+  [posts, setPosts] = useState([])
 
   useEffect(() => {
     async function requestPost() {
       try {
         let res = await fetch(API_URL)
         const json = await res.json();
-        setPost(json)
+        setPosts(json)
         return json;
       } catch(err) {
         if (err instanceof TypeError) {
@@ -32,12 +33,20 @@ const App = () => {
     }
 
     requestPost();
-  }, [setPost])
+  }, [setPosts])
 
   return (
     <div>
-      <h2>{post.name}</h2>
-      <p>{post.description}</p>
+      <ul>
+      {posts.map((post) => {
+        return (
+          <li key={post.id}>
+            <h2>{post.name}</h2>
+            <p>{post.description}</p>
+          </li>
+        )
+      })}
+      </ul>
     </div>
   );
 }
