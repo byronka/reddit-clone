@@ -4,6 +4,17 @@ class PostsController < ApplicationController
   end
 
   def create
-    render(json: {"success": true})
+    post = Post.new(post_params)
+
+    if post.save
+      render(json: {success: true, id: post.id})
+    else
+      render(json: {success: false, id: nil})
+    end
   end
+
+  private
+    def post_params
+      params.require(:post).permit(:name, :description)
+    end
 end
