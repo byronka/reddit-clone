@@ -9,7 +9,7 @@ class PostsController < ApplicationController
     if post.save
       render(json: {success: true, id: post.id})
     else
-      render(json: {success: false, id: nil})
+      render(json: {success: false, id: nil}, :status => :bad_request)
     end
   end
 
