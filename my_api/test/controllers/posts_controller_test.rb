@@ -66,4 +66,23 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     refute response_body["success"]
     assert_nil response_body["id"]
   end
+
+  test "should delete all posts" do
+    Post.create(name: "Fake Post 1", description: "Fake Post 1")
+    Post.create(name: "Fake Post 2", description: "Fake Post 2")
+    Post.create(name: "Fake Post 3", description: "Fake Post 3")
+
+    # ensure posts inserted into database
+    assert_equal 3, Post.count
+
+    get '/posts/delete_all'
+
+    # should get 200 and { success: true }
+    assert_response :success
+    response_body = JSON.parse response.body
+    assert response_body["success"]
+
+    # should have deleted all posts
+    assert_equal 0, Post.count
+  end
 end

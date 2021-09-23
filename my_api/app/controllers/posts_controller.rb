@@ -13,6 +13,11 @@ class PostsController < ApplicationController
     end
   end
 
+  def delete_all
+    Post.delete_all
+    render(json: {success: true})
+  end
+
   private
     def post_params
       params.require(:post).permit(:name, :description)
