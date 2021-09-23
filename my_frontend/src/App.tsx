@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import PostInterface from "./PostInterface";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
+import { setConstantValue } from "typescript";
 
 const API_URL = "http://localhost:3000/posts";
 
 const App = () => {
   let posts: PostInterface[];
   let setPosts: Function;
-  [posts, setPosts] = useState([]);
+  [posts, setPosts] = useState<PostInterface[]>([]);
 
   useEffect(() => {
     async function requestPost() {
@@ -31,9 +32,23 @@ const App = () => {
     requestPost();
   }, [setPosts]);
 
+  const createPost = (name: string, description: string) => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name, description: description }),
+    };
+    fetch("http://localhost:3000/posts", requestOptions)
+      .then(async (response) => {
+        let { id } = await response.json();
+        setPosts([{ id: id, name: name, description: description }, ...posts]);
+      })
+      .catch((error) => console.log("error"));
+  };
+
   return (
     <div>
-      <PostForm />
+      <PostForm createPost={createPost} />
       <PostList posts={posts} />
     </div>
   );

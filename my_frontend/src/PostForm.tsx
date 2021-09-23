@@ -1,6 +1,10 @@
 import React, { SyntheticEvent, useState } from "react";
 
-const PostForm = () => {
+interface PostFormProps {
+  createPost: Function;
+}
+
+const PostForm = (props: PostFormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [success, setSuccess] = useState(false);
@@ -17,17 +21,7 @@ const PostForm = () => {
 
   const submitData = (event: SyntheticEvent) => {
     event.preventDefault();
-    // Simple POST request with a JSON body using fetch
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, description: description }),
-    };
-    fetch("http://localhost:3000/posts", requestOptions)
-      .then((response) => response.json())
-      .then(() => {
-        setSuccess(true);
-      });
+    props.createPost(name, description);
   };
 
   const successBox = success ? <div id="postResult">Success</div> : <div></div>;
