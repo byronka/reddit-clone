@@ -2,14 +2,11 @@ import { useState, useEffect } from "react";
 import PostInterface from "./PostInterface";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
-import { setConstantValue } from "typescript";
 
 const API_URL = "http://localhost:3000/posts";
 
 const App = () => {
-  let posts: PostInterface[];
-  let setPosts: Function;
-  [posts, setPosts] = useState<PostInterface[]>([]);
+  const [posts, setPosts] = useState<PostInterface[]>([]);
 
   useEffect(() => {
     async function requestPost() {

@@ -7,7 +7,6 @@ interface PostFormProps {
 const PostForm = (props: PostFormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const handleNameChange = (event: React.FormEvent<HTMLInputElement>) => {
     setName(event.currentTarget.value);
@@ -24,7 +23,6 @@ const PostForm = (props: PostFormProps) => {
     props.createPost(name, description);
   };
 
-  const successBox = success ? <div id="postResult">Success</div> : <div></div>;
   return (
     <>
       <form action="#" method="POST" onSubmit={submitData}>
@@ -48,7 +46,6 @@ const PostForm = (props: PostFormProps) => {
 
         <button>Enter new post</button>
       </form>
-      {successBox}
     </>
   );
 };
