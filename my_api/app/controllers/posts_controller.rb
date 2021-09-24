@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    render(json: Post.select("id, name, description"))
+    render(json: Post.select("id, name, description").order(id: :desc))
   end
 
   def create

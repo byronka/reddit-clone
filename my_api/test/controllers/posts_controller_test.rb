@@ -85,4 +85,20 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     # should have deleted all posts
     assert_equal 0, Post.count
   end
+
+  # so that when we show our Posts, we should show the most 
+  # recently added post at the top of the list.
+  test "should retrieve db entries in descending order" do
+    expected_ids = 3.times.map do |i|
+      p = Post.create(name: "Fake Post #{i}", description: "Fake Post #{i}")
+      p.id
+    end
+
+    our_posts = get posts_url
+
+    assert_equal(expected_ids.reverse, JSON.parse(response.body).map { |x| x["id"] })
+  end
+
+
+
 end
