@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useState } from "react";
 
 interface PostFormProps {
-  createPost: Function;
+  onPostSubmit: Function;
 }
 
 const PostForm = (props: PostFormProps) => {
@@ -20,7 +20,7 @@ const PostForm = (props: PostFormProps) => {
 
   const submitData = (event: SyntheticEvent) => {
     event.preventDefault();
-    props.createPost(name, description);
+    props.onPostSubmit(name, description);
   };
 
   return (

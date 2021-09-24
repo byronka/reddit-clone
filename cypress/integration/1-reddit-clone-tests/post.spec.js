@@ -13,7 +13,6 @@ describe("testing our reddit clone", () => {
     cy.get("#nameInput").type("I am a name");
     cy.get("#descriptionInput").type("I am a description");
     cy.get("button").click();
-    cy.get("#postResult").first().should("have.text", "Success");
     cy.get("li").contains("I am a name").should("be.visible");
   });
 });
