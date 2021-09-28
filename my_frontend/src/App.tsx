@@ -1,27 +1,20 @@
-import { useState, useEffect } from "react";
-import PostInterface from "./PostInterface";
-import PostList from "./PostList";
-import PostForm from "./PostForm";
-import api from "./api";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import DetailPage from "./DetailPage";
+import HomePage from "./HomePage";
 
 const App = () => {
-  const [posts, setPosts] = useState<PostInterface[]>([]);
-
-  useEffect(() => {
-    (async () => setPosts(await api.getPosts()))();
-  }, []);
-
-  const onPostSubmit = async (name: string, description: string) => {
-    let { id } = await api.createPost(name, description);
-    const newPost = { id: id, name: name, description: description } 
-    setPosts([newPost, ...posts]);
-  };
-
   return (
-    <div>
-      <PostForm onPostSubmit={onPostSubmit} />
-      <PostList posts={posts} />
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/posts/:id">
+          <DetailPage />
+        </Route>
+        <Route path="/">
+          <HomePage />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

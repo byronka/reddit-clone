@@ -13,6 +13,11 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+    post = Post.find(params[:id])
+    render(json: { id: post.id, name: post.name, description: post.description })
+  end
+
   def delete_all
     Post.delete_all
     render(json: {success: true})

@@ -3,7 +3,16 @@ import PostInterface from "./PostInterface";
 
 const API_URL = "http://localhost:3000/posts";
 
-const getPosts = async (): Promise<PostInterface[]> => {
+export const getPost = async (id: string): Promise<PostInterface> => {
+  try {
+    const res = await fetch(API_URL + "/" + id);
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getPosts = async (): Promise<PostInterface[]> => {
   try {
     const res = await fetch(API_URL);
     return await res.json();
@@ -19,7 +28,7 @@ const getPosts = async (): Promise<PostInterface[]> => {
   }
 };
 
-const createPost = async (
+export const createPost = async (
   name: string,
   description: string
 ): Promise<{ success: boolean; id: string }> => {
@@ -33,5 +42,5 @@ const createPost = async (
   return await res.json();
 };
 
-const api = { createPost: createPost, getPosts: getPosts };
-export default api;
+// const api = { createPost: createPost, getPosts: getPosts };
+// export default api;
