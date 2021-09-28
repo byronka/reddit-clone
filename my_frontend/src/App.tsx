@@ -8,30 +8,14 @@ const App = () => {
   const [posts, setPosts] = useState<PostInterface[]>([]);
 
   useEffect(() => {
-    async function requestPost() {
-      try {
-        const json = await api.getPosts()
-        return json;
-      } catch (err) {
-        if (err instanceof TypeError) {
-          if (err.message === "Failed to fetch") {
-            alert("failed to fetch - is the server down?");
-          }
-        } else {
-          console.log("failed during request: " + err);
-        }
-      }
-
-      setPosts(json);
-    }
-
-    requestPost();
-  }, [setPosts]);
+    (async () => setPosts(await api.getPosts()))();
+  }, []);
 
   const onPostSubmit = async (name: string, description: string) => {
-    let { id } = await api.createPost(name, description)
-    setPosts([{ id: id, name: name, description: description }, ...posts]);
-  }
+    let { id } = await api.createPost(name, description);
+    const newPost = { id: id, name: name, description: description } 
+    setPosts([newPost, ...posts]);
+  };
 
   return (
     <div>
