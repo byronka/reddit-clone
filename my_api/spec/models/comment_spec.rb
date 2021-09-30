@@ -14,4 +14,17 @@ RSpec.describe Comment, type: :model do
       expect(comment.valid?).to be false
     end
   end
+
+  describe '.for_post' do
+    it 'returns comments for a post' do
+      post = Post.create! name: 'Post', description: 'Description'
+
+      comments = 5.times.map do |i|
+        Comment.create! value: "comment #{i}", post: post
+      end
+
+      actual_comments = Comment.for_post(post)
+      expect(actual_comments).to eq(comments)
+    end
+  end
 end

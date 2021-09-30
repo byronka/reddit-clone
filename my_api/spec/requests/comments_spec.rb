@@ -1,98 +1,55 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe "/comments", type: :request do
+RSpec.describe '/comments', type: :request do
 
-#   describe "GET /index" do
-#     it "renders a successful response" do
-#       myPost = Post.create! { name: 'I am a name', description: 'this is my description'}
-#       Comment.create! {value: 'I am a great comment!', post: myPost}
-#       get comments_url, headers: valid_headers, as: :json
-#       expect(response).to be_successful
-#     end
-#   end
+  describe 'GET /comments?post_id=5' do
+    context('post has no comments') do
+      it 'returns an empty list' do
+        my_post = Post.create!(name: 'myPost', description: 'I am the description')
+        get comments_url, params: { post_id: my_post.id }
+        response_body = JSON.parse response.body
 
-#   describe "GET /show" do
-#     it "renders a successful response" do
-#       comment = Comment.create! valid_attributes
-#       get comment_url(comment), as: :json
-#       expect(response).to be_successful
-#     end
-#   end
+        expect(response_body['comments']).to eq([])
+      end
+    end
 
-#   describe "POST /create" do
-#     context "with valid parameters" do
-#       it "creates a new Comment" do
-#         expect {
-#           post comments_url,
-#                params: { comment: valid_attributes }, headers: valid_headers, as: :json
-#         }.to change(Comment, :count).by(1)
-#       end
+    context('post has one comment') do
+      it 'returns list with one element' do
+          my_post = Post.create!(name: 'myPost', description: 'I am the description')
+          my_comment = Comment.create!(value: 'My comment', post: my_post)
 
-#       it "renders a JSON response with the new comment" do
-#         post comments_url,
-#              params: { comment: valid_attributes }, headers: valid_headers, as: :json
-#         expect(response).to have_http_status(:created)
-#         expect(response.content_type).to match(a_string_including("application/json"))
-#       end
-#     end
+          get comments_url, params: { post_id: my_post.id }
+          response_body = JSON.parse response.body
 
-#     context "with invalid parameters" do
-#       it "does not create a new Comment" do
-#         expect {
-#           post comments_url,
-#                params: { comment: invalid_attributes }, as: :json
-#         }.to change(Comment, :count).by(0)
-#       end
+          expect(response_body['comments']).to eq([{'id' => my_comment.id, 'value' => my_comment.value}])
+      end
+    end
+  end
 
-#       it "renders a JSON response with errors for the new comment" do
-#         post comments_url,
-#              params: { comment: invalid_attributes }, headers: valid_headers, as: :json
-#         expect(response).to have_http_status(:unprocessable_entity)
-#         expect(response.content_type).to eq("application/json")
-#       end
-#     end
-#   end
+  describe 'POST /comments' do
 
-#   describe "PATCH /update" do
-#     context "with valid parameters" do
-#       let(:new_attributes) {
-#         skip("Add a hash of attributes valid for your model")
-#       }
+    context "with valid parameters" do
+      it 'creates a new comment' do
+        my_post = Post.create!(name: 'myPost', description: 'I am the description')
+        expect {
+          post comments_url, 
+               params: { comment: { value: 'I am a comment', post_id: my_post.id} }  
+        }.to change(Comment, :count).by(1)
+      end
 
-#       it "updates the requested comment" do
-#         comment = Comment.create! valid_attributes
-#         patch comment_url(comment),
-#               params: { comment: new_attributes }, headers: valid_headers, as: :json
-#         comment.reload
-#         skip("Add assertions for updated state")
-#       end
+      it 'creates a new comment 2' do
+          result = post comments_url, 
+                        params: { comment: { value: 'I am a comment', post_id: '1'} }, as: :json
 
-#       it "renders a JSON response with the comment" do
-#         comment = Comment.create! valid_attributes
-#         patch comment_url(comment),
-#               params: { comment: new_attributes }, headers: valid_headers, as: :json
-#         expect(response).to have_http_status(:ok)
-#         expect(response.content_type).to match(a_string_including("application/json"))
-#       end
-#     end
+          print response
+      end
 
-#     context "with invalid parameters" do
-#       it "renders a JSON response with errors for the comment" do
-#         comment = Comment.create! valid_attributes
-#         patch comment_url(comment),
-#               params: { comment: invalid_attributes }, headers: valid_headers, as: :json
-#         expect(response).to have_http_status(:unprocessable_entity)
-#         expect(response.content_type).to eq("application/json")
-#       end
-#     end
-#   end
+      # it 'creates a new comment part 3' do
+      #   puts ( post (comments_url, params: {value: 'I am a comment', post'1'}, as: :json))
+      # end
 
-#   describe "DELETE /destroy" do
-#     it "destroys the requested comment" do
-#       comment = Comment.create! valid_attributes
-#       expect {
-#         delete comment_url(comment), headers: valid_headers, as: :json
-#       }.to change(Comment, :count).by(-1)
-#     end
-#   end
-# end
+    end
+
+  end
+
+end

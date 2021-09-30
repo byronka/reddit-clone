@@ -1,4 +1,8 @@
 class CommentsController < ApplicationController
+  def index
+    comments = Comment.for_post(params[:post_id])
+    render json: {comments: comments.select("id, value") }
+  end
 
   # GET /comments/1
   def show
