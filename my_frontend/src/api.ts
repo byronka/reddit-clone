@@ -43,6 +43,20 @@ export const createPost = async (
   return await res.json();
 };
 
+export const createComment = async (
+  value: string,
+  postId: string
+): Promise<{ success: boolean; id: string }> => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ value, post_id: postId }),
+  };
+
+  let res = await fetch(API_URL + "/comments", requestOptions);
+  return await res.json();
+};
+
 export const getComments = async (
   postId: string
 ): Promise<CommentInterface[]> => {

@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import PostInterface from "./PostInterface";
 import CommentInterface from "./CommentInterface";
 import CommentList from "./CommentList";
-import { getPost, getComments } from "./api";
+import CommentForm from "./CommentForm";
+import { getPost, getComments, createComment } from "./api";
 
 const initialPostState: PostInterface = { id: "", name: "", description: "" };
 const initialCommentsState: CommentInterface[] = [];
 
 const DetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id: postId } = useParams<{ id: string }>();
+
   // const [status, setStatus] = useState({}: )
   const [post, setPost] = useState<PostInterface>(initialPostState);
   const [comments, setComments] =
@@ -18,14 +20,21 @@ const DetailPage = () => {
 
   useEffect(() => {
     const request = async () => {
-      const post = await getPost(id);
+      const post = await getPost(postId);
       setPost(post);
 
-      const comments = await getComments(id);
+      const comments = await getComments(postId);
       setComments(comments);
     };
     request();
-  }, [id]);
+  }, [postId]);
+
+  const onCommentSubmit = async (value: string) => {
+    console.log("postId is ", postId);
+    let { id } = await createComment(value, postId);
+    const newComment = { id, value };
+    setComments([newComment, ...comments]);
+  };
 
   return (
     <div>
@@ -35,6 +44,7 @@ const DetailPage = () => {
       <h1>{post.name}</h1>
       <p>{post.description}</p>
       <h2>Comments</h2>
+      <CommentForm onCommentSubmit={onCommentSubmit} />
       <CommentList comments={comments} />
     </div>
   );

@@ -5,15 +5,15 @@ interface CommentFormProps {
 }
 
 const CommentForm = (props: CommentFormProps) => {
-  const [comment, setComment] = useState("");
+  const [value, setValue] = useState("");
 
   const handleCommentChange = (event: React.FormEvent<HTMLInputElement>) => {
-    setComment(event.currentTarget.value);
+    setValue(event.currentTarget.value);
   };
 
   const submitData = (event: SyntheticEvent) => {
     event.preventDefault();
-    props.onCommentSubmit(comment);
+    props.onCommentSubmit(value);
   };
 
   return (
@@ -25,7 +25,7 @@ const CommentForm = (props: CommentFormProps) => {
             id="commentInput"
             name="commentInput"
             type="text"
-            value={comment}
+            value={value}
             onChange={handleCommentChange}
           />
         </label>
