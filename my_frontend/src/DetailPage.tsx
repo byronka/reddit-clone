@@ -17,6 +17,7 @@ const DetailPage = () => {
   const [post, setPost] = useState<PostInterface>(initialPostState);
   const [comments, setComments] =
     useState<CommentInterface[]>(initialCommentsState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const request = async () => {
@@ -25,6 +26,7 @@ const DetailPage = () => {
 
       const comments = await getComments(postId);
       setComments(comments);
+      setLoading(false);
     };
     request();
   }, [postId]);
@@ -33,19 +35,29 @@ const DetailPage = () => {
     console.log("postId is ", postId);
     let { id } = await createComment(value, postId);
     const newComment = { id, value };
-    setComments([newComment, ...comments]);
+    setComments([...comments, newComment]);
   };
 
+  let renderPage;
+  if (loading) {
+    renderPage = "";
+  } else {
+    renderPage = (
+      <div>
+        <h1>{post.name}</h1>
+        <p>{post.description}</p>
+        <h2>Comments</h2>
+        <CommentForm onCommentSubmit={onCommentSubmit} />
+        <CommentList comments={comments} />
+      </div>
+    );
+  }
   return (
     <div>
       <p>
         <Link to="/">Home</Link>
       </p>
-      <h1>{post.name}</h1>
-      <p>{post.description}</p>
-      <h2>Comments</h2>
-      <CommentForm onCommentSubmit={onCommentSubmit} />
-      <CommentList comments={comments} />
+      {renderPage}
     </div>
   );
 };
