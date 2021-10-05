@@ -4,12 +4,6 @@ class CommentsController < ApplicationController
     render json: {comments: comments.select("id, value") }
   end
 
-  # GET /comments/1
-  def show
-    comment = Comment.find(params[:id])
-    render json: comment
-  end
-
   # POST /comments
   def create
     comment = Comment.new(comment_params)
