@@ -1,0 +1,8 @@
+edit titles of posts
+edit descriptions of posts
+edit comments 
+(when should edits be allowed?)
+authentication
+creating users
+prettying things up
+voting
