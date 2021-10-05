@@ -13,6 +13,11 @@ class PostsController < ApplicationController
     end
   end
 
+  def update
+    post = Post.find(params[:id])
+    post.update!(description: params[:description])
+  end
+
   def show
     post = Post.find(params[:id])
     render(json: { id: post.id, name: post.name, description: post.description })

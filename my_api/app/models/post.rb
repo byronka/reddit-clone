@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
     validates_presence_of :name, message: 'gimme a name' 
-    validates_presence_of :description, message: 'gimme a description' 
+    validates :description, exclusion: { in: [ nil ], message: "cannot be nil" }
 
     has_many :comments
 end
