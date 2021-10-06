@@ -14,6 +14,7 @@ const CommentForm = (props: CommentFormProps) => {
   const submitData = (event: SyntheticEvent) => {
     event.preventDefault();
     props.onCommentSubmit(value);
+    setValue("");
   };
 
   return (
