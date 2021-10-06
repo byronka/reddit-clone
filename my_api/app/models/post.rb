@@ -3,4 +3,6 @@ class Post < ApplicationRecord
     validates :description, exclusion: { in: [ nil ], message: "cannot be nil" }
 
     has_many :comments
+
+    #we added on delete cascade to the database, go check it out yall
 end

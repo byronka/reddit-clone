@@ -1,5 +1,9 @@
 class CommentsController < ApplicationController
   def index
+    if (Post.find_by_id(params[:post_id]).nil?)
+      return render status: :not_found
+    end
+
     comments = Comment.for_post(params[:post_id])
     render json: {comments: comments.select("id, value") }
   end
@@ -9,7 +13,7 @@ class CommentsController < ApplicationController
     comment = Comment.new(comment_params)
 
     if comment.save
-      render json: comment, status: :created, location: comment
+      render json: {id: comment.id, success: true}, status: :created, location: comment
     else
       render json: comment.errors, status: :unprocessable_entity
     end

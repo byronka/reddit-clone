@@ -32,7 +32,6 @@ class PostsController < ApplicationController
 
   def delete_all
     Post.delete_all
-    render(json: {success: true})
   end
 
   private
