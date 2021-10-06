@@ -32,3 +32,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# saved by the test framework for comparing against recent failures
+examples.txt

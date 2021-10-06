@@ -14,8 +14,15 @@ class PostsController < ApplicationController
   end
 
   def update
-    post = Post.find(params[:id])
-    post.update!(description: params[:description])
+    post = Post.find_by(id: params[:id])
+
+    if post.nil?
+      return render(status: :not_found)
+    end
+
+    if (!post.update(description: params[:description]))
+      return render(json: { errors: post.errors.messages[:description] }, status: :unprocessable_entity)
+    end
   end
 
   def show
