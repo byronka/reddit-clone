@@ -43,6 +43,20 @@ export const createPost = async (
   return await res.json();
 };
 
+export const updatePostDescription = async (
+  postId: string,
+  description: string
+): Promise<Boolean> => {
+  const requestOptions = {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ post_id: postId, description: description }),
+  };
+
+  let res = await fetch(API_URL + "/posts/" + postId, requestOptions);
+  return res.status === 204;
+};
+
 export const createComment = async (
   value: string,
   postId: string
