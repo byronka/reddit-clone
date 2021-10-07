@@ -22,68 +22,30 @@ export const getPost = async (id: string): Promise<PostInterface> => {
   });
 };
 
-// export const fetchData = async (path: string) => {
-//   const res = await fetch(API_URL + path);
-//   return await res.json();
-// };
-
-// export const error = async (err: *) => {
-//   if (err instanceof TypeError) {
-//     if (err.message === "Failed to fetch") {
-//       alert("failed to fetch - is the server down?");
-//     }
-//   } else {
-//     console.log("failed during request: " + err);
-//   }
-// };
-
-// export const getPost = async (
-//   id: string
-// ): Promise<PostInterface | PostNotFound> => {
-//   try {
-//     return fetchData("/posts" + id);
-//   } catch (err: *) {
-//     error(err);
-//     return { id, message: err.message };
-//   }
-// };
-
 export const getData = async <T>(
   fullPath: string,
   errorReturnValue: T
 ): Promise<T> => {
   try {
     const res = await fetch(API_URL + fullPath);
-    return await res.json();
-  } catch (err: *) {
+    const bodyText = await res.text();
+    if (bodyText.trim().length === 0) {
+      return errorReturnValue;
+    } else {
+      return JSON.parse(bodyText);
+    }
+  } catch (err: any) {
     if (err instanceof TypeError) {
       if (err.message === "Failed to fetch") {
         alert("failed to fetch - is the server down?");
       }
     } else {
+      console.log(err);
       console.log("failed during request: " + err);
     }
     return errorReturnValue;
   }
 };
-
-// export const getComments = async (
-//   postId: string
-// ): Promise<CommentInterface[]> => {
-//   try {
-//     const res = await fetch(API_URL + `/comments?post_id=${postId}`);
-//     return await res.json();
-//   } catch (err) {
-//     if (err instanceof TypeError) {
-//       if (err.message === "Failed to fetch") {
-//         alert("failed to fetch - is the server down?");
-//       }
-//     } else {
-//       console.log("failed during request: " + err);
-//     }
-//     return [];
-//   }
-// };
 
 export const createPost = async (
   name: string,
