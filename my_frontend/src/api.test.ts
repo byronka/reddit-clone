@@ -7,7 +7,7 @@ import * as api from "./api";
 
 const API_URL = "http://localhost:3000";
 
-test("foo", async () => {
+test("test all the apis at once", async () => {
   // Delete all the posts
   await fetch(`${API_URL}/posts/delete_all`);
 

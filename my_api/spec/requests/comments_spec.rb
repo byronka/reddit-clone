@@ -9,7 +9,7 @@ RSpec.describe '/comments', type: :request do
         get comments_url, params: { post_id: my_post.id }
         response_body = JSON.parse response.body
 
-        expect(response_body['comments']).to eq([])
+        expect(response_body).to eq([])
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe '/comments', type: :request do
           get comments_url, params: { post_id: my_post.id }
           response_body = JSON.parse response.body
 
-          expect(response_body['comments']).to eq([{'id' => my_comment.id, 'value' => my_comment.value}])
+          expect(response_body).to eq([{'id' => my_comment.id, 'value' => my_comment.value}])
       end
     end
   end

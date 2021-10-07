@@ -4,20 +4,58 @@ import CommentInterface from "./CommentInterface";
 
 const API_URL = "http://localhost:3000";
 
-export const getPost = async (id: string): Promise<PostInterface> => {
-  try {
-    const res = await fetch(API_URL + "/posts/" + id);
-    return await res.json();
-  } catch (err) {
-    throw err;
-  }
-};
+// get request:
 
 export const getPosts = async (): Promise<PostInterface[]> => {
+  return getData("/posts", []);
+};
+
+export const getComments = async (id: string): Promise<CommentInterface[]> => {
+  return getData(`/comments?post_id=${id}`, []);
+};
+
+export const getPost = async (id: string): Promise<PostInterface> => {
+  return getData(`/posts/${id}`, {
+    id: "did not find",
+    name: "did not find",
+    description: "did not find",
+  });
+};
+
+// export const fetchData = async (path: string) => {
+//   const res = await fetch(API_URL + path);
+//   return await res.json();
+// };
+
+// export const error = async (err: *) => {
+//   if (err instanceof TypeError) {
+//     if (err.message === "Failed to fetch") {
+//       alert("failed to fetch - is the server down?");
+//     }
+//   } else {
+//     console.log("failed during request: " + err);
+//   }
+// };
+
+// export const getPost = async (
+//   id: string
+// ): Promise<PostInterface | PostNotFound> => {
+//   try {
+//     return fetchData("/posts" + id);
+//   } catch (err: *) {
+//     error(err);
+//     return { id, message: err.message };
+//   }
+// };
+
+export const getData = async <T>(
+  fullPath: string,
+  errorReturnValue: T
+): Promise<T> => {
   try {
-    const res = await fetch(API_URL + "/posts");
+    const res = await fetch(API_URL + fullPath);
     return await res.json();
-  } catch (err) {
+  } catch (err: *) {
     if (err instanceof TypeError) {
       if (err.message === "Failed to fetch") {
         alert("failed to fetch - is the server down?");
@@ -25,9 +63,27 @@ export const getPosts = async (): Promise<PostInterface[]> => {
     } else {
       console.log("failed during request: " + err);
     }
-    return [];
+    return errorReturnValue;
   }
 };
+
+// export const getComments = async (
+//   postId: string
+// ): Promise<CommentInterface[]> => {
+//   try {
+//     const res = await fetch(API_URL + `/comments?post_id=${postId}`);
+//     return await res.json();
+//   } catch (err) {
+//     if (err instanceof TypeError) {
+//       if (err.message === "Failed to fetch") {
+//         alert("failed to fetch - is the server down?");
+//       }
+//     } else {
+//       console.log("failed during request: " + err);
+//     }
+//     return [];
+//   }
+// };
 
 export const createPost = async (
   name: string,
@@ -69,22 +125,4 @@ export const createComment = async (
 
   let res = await fetch(API_URL + "/comments", requestOptions);
   return await res.json();
-};
-
-export const getComments = async (
-  postId: string
-): Promise<CommentInterface[]> => {
-  try {
-    const res = await fetch(API_URL + `/comments?post_id=${postId}`);
-    return await res.json().then((response) => response.comments);
-  } catch (err) {
-    if (err instanceof TypeError) {
-      if (err.message === "Failed to fetch") {
-        alert("failed to fetch - is the server down?");
-      }
-    } else {
-      console.log("failed during request: " + err);
-    }
-    return [];
-  }
 };

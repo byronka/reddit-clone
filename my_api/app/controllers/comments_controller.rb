@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     end
 
     comments = Comment.for_post(params[:post_id])
-    render json: {comments: comments.select("id, value") }
+    render json: comments.select("id, value") 
   end
 
   # POST /comments
