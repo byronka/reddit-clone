@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   resources :comments
 
+  post '/register_user', to: 'register_user#register', as: :register_user
+
   # resources :posts do
   #   resources :comments
   # end
